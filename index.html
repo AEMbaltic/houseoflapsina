@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>House of Lapsina — A Walkable Art Gallery</title>
+<meta name="description" content="Walk through Lapsina's house with the arrow keys and open her paintings." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%23241f2c'/><rect x='3' y='3' width='10' height='8' fill='%23e0b25f'/><rect x='4' y='4' width='8' height='6' fill='%235d8aa8'/></svg>" />
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+<div id="app">
+  <header id="hud">
+    <div class="hud-left">
+      <span class="hud-title">House of Lapsina</span>
+      <span class="hud-room" id="roomName">Entrance Hall</span>
+    </div>
+    <div class="hud-right">
+      <span class="hud-count"><b id="seenCount">0</b> / <span id="totalCount">12</span> seen</span>
+      <button id="soundBtn" class="hud-btn" type="button" aria-pressed="false" title="Toggle sound (M)">♪ off</button>
+      <button id="helpBtn" class="hud-btn" type="button" title="How to play (H)">?</button>
+    </div>
+  </header>
+
+  <div id="stage">
+    <canvas id="game" width="384" height="216" aria-label="Gallery map. Use arrow keys to walk."></canvas>
+    <div id="prompt" hidden><span class="key">SPACE</span> look</div>
+  </div>
+
+  <nav id="touch" aria-hidden="true">
+    <div class="dpad">
+      <button class="pad up"    data-dir="up"    aria-label="Walk up">▲</button>
+      <button class="pad left"  data-dir="left"  aria-label="Walk left">◀</button>
+      <button class="pad right" data-dir="right" aria-label="Walk right">▶</button>
+      <button class="pad down"  data-dir="down"  aria-label="Walk down">▼</button>
+    </div>
+    <button class="act" id="actBtn" aria-label="Look at painting">LOOK</button>
+  </nav>
+</div>
+
+<!-- Artwork viewer -->
+<div id="viewer" class="overlay" hidden>
+  <div class="viewer-box" role="dialog" aria-modal="true" aria-labelledby="artTitle">
+    <button class="close" id="closeBtn" aria-label="Close (Esc)">✕</button>
+    <div class="viewer-art">
+      <div class="matte"><canvas id="artCanvas"></canvas></div>
+    </div>
+    <div class="viewer-info">
+      <p class="plate-no" id="artNo">No. 01</p>
+      <h2 id="artTitle">Title</h2>
+      <p class="byline"><span id="artArtist">Lapsina</span> · <span id="artYear">2024</span></p>
+      <p class="medium" id="artMedium">Medium</p>
+      <p class="note" id="artNote">Note</p>
+      <div class="viewer-nav">
+        <button id="prevBtn" type="button">← previous</button>
+        <button id="nextBtn" type="button">next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Help -->
+<div id="help" class="overlay" hidden>
+  <div class="help-box" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <button class="close" id="helpClose" aria-label="Close">✕</button>
+    <h2 id="helpTitle">How to visit</h2>
+    <ul>
+      <li><b>Arrow keys</b> (or WASD) — walk around the house</li>
+      <li><b>Space / Enter / E</b> — look at the painting you are standing in front of</li>
+      <li><b>← →</b> inside a painting — browse the next work</li>
+      <li><b>Esc</b> — step back from the painting</li>
+      <li><b>M</b> — sound on/off · <b>H</b> — this card</li>
+    </ul>
+    <p class="help-foot">Five rooms, twelve paintings. Lapsina hung them all herself.</p>
+  </div>
+</div>
+
+<script src="assets/artworks.js"></script>
+<script src="assets/sprite.js"></script>
+<script src="assets/game.js"></script>
+</body>
+</html>
