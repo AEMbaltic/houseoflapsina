@@ -34,11 +34,15 @@ body {
   gap: 12px;
 }
 
-#hud { position: absolute; top: 12px; left: 0; right: 0; margin: 0 auto; padding: 0 14px; }
-
 /* ---------- HUD ---------- */
 
 #hud {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  padding: 0 14px;
   width: 100%;
   max-width: 1100px;
   display: flex;
