@@ -400,6 +400,7 @@
   };
 
   addEventListener('keydown', function (e) {
+    if (window.__boot) return;              // the title card has the keyboard
     if (e.repeat && !viewerOpen) return;
     const dir = KEYMAP[e.code];
 
@@ -695,7 +696,7 @@
     if (keys.up || pad.up) dy -= 1;
     if (keys.down || pad.down) dy += 1;
 
-    player.moving = !viewerOpen && !helpOpen && (dx !== 0 || dy !== 0);
+    player.moving = !viewerOpen && !helpOpen && !window.__boot && (dx !== 0 || dy !== 0);
 
     if (player.moving) {
       const len = Math.hypot(dx, dy) || 1;
@@ -798,8 +799,12 @@
   }
   requestAnimationFrame(loop);
 
-  // First-time visitors get the instructions card.
-  if (!seen.size) setTimeout(function () { toggleHelp(true); }, 400);
+  // First-time visitors get the instructions card, once the title card is gone.
+  function welcome() {
+    if (!seen.size) setTimeout(function () { toggleHelp(true); }, 260);
+  }
+  if (window.__boot) addEventListener('lapsina:start', welcome, { once: true });
+  else welcome();
 
   // Handy from the browser console when rearranging the house.
   window.__lapsina = {

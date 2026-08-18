@@ -10,6 +10,7 @@ No build step, no dependencies, no images — open `index.html` and it runs.
 
 | Key | Does |
 | --- | --- |
+| Space (title card) | enter the house |
 | Arrow keys / WASD | walk |
 | Space / Enter / E | look at the painting in front of you |
 | ← → while looking | browse to the next work |
@@ -22,6 +23,15 @@ the view turns portrait.
 
 Which paintings you have seen is kept in `localStorage`, so the counter in the
 corner survives a reload.
+
+## The title card
+
+The game opens on an attract-mode title screen: a 320x200 pixel card drawn by
+`assets/title.js`, framed like a CRT. The paintings hanging in it are the real
+works from `artworks.js`, the girl is the same sprite, and the letters come from
+a 5x7 bitmap font defined at the top of that file. It holds the keyboard until
+you press space (or tap), which is also how long the house takes to build
+itself in the background.
 
 ## The house
 
@@ -36,6 +46,7 @@ index.html          markup: canvas, HUD, artwork viewer, help card
 assets/styles.css   everything outside the canvas
 assets/artworks.js  the twelve paintings — each one a small drawing program
 assets/sprite.js    Lapsina, drawn from rectangles (no sprite sheet)
+assets/title.js     the title card, its pixel font and its little gallery
 assets/game.js      tile map, collision, camera, lighting, interaction
 ```
 
