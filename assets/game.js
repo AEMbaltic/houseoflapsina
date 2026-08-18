@@ -448,6 +448,11 @@
   document.getElementById('actBtn').addEventListener('click', function () {
     if (nearest) openViewer(nearest.art.id);
   });
+
+  // long-press on a control should do nothing at all
+  [document.getElementById('touch'), canvas].forEach(function (el) {
+    el.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  });
   if (matchMedia('(pointer: coarse)').matches) {
     document.body.classList.add('touch');
     document.getElementById('prompt').innerHTML = 'press <span class="key">LOOK</span>';
