@@ -138,43 +138,11 @@
       }
     },
     {
-      title: 'Static Bloom',
-      year: 2023,
-      medium: 'Screenprint, edition of one',
+      title: 'Paeonia lactiflora',
+      year: 2025,
+      medium: 'Oil on canvas',
       aspect: [1, 1],
-      seed: 7788,
-      note: 'Made by pointing an old television at a flower and turning the aerial until the flower agreed.',
-      paint: function (c, w, h, r) {
-        c.fillStyle = '#120f1c';
-        c.fillRect(0, 0, w, h);
-        const cx = w * 0.5, cy = h * 0.5;
-        const cols = ['#f2b6c6', '#e2617a', '#c9457f', '#7c3e93', '#3f3a86', '#2b2b5e'];
-        for (let i = cols.length - 1; i >= 0; i--) {
-          c.fillStyle = cols[i];
-          c.beginPath();
-          const rad = (h * 0.48) * ((i + 1) / cols.length);
-          for (let a = 0; a <= Math.PI * 2 + 0.01; a += Math.PI / 24) {
-            const wob = 1 + Math.sin(a * (5 + i)) * 0.09;
-            const x = cx + Math.cos(a) * rad * wob;
-            const y = cy + Math.sin(a) * rad * wob;
-            a === 0 ? c.moveTo(x, y) : c.lineTo(x, y);
-          }
-          c.closePath();
-          c.fill();
-        }
-        c.fillStyle = '#ffe6ae';
-        c.beginPath();
-        c.arc(cx, cy, h * 0.05, 0, Math.PI * 2);
-        c.fill();
-        c.save();
-        c.globalAlpha = 0.28;
-        for (let y = 0; y < h; y += Math.max(2, h * 0.035)) {
-          c.fillStyle = '#000';
-          c.fillRect(0, y, w, Math.max(0.6, h * 0.012));
-        }
-        c.restore();
-        grain(c, w, h, r, 0.08);
-      }
+      src: 'assets/art/paeonia-lactiflora.jpg'
     },
     {
       title: 'Harbour, Blue Hour',
@@ -514,115 +482,6 @@
         c.fillRect(w * 0.405, h * 0.78, w * 0.012, h * 0.1);
         grain(c, w, h, r, 0.05);
       }
-    },
-    {
-      title: 'Paeonia lactiflora',
-      year: 2025,
-      medium: 'Oil on canvas',
-      aspect: [1, 1],
-      seed: 2025,
-      room: 'grand',
-      src: 'assets/art/paeonia-lactiflora.jpg',
-      note: 'A garden peony on a round canvas, opened as far as it goes. Against a green as dark as its own leaves, almost none of the white is white: the shadows are blue, the folds are ochre, and only the turning edges take the light.',
-      paint: function (c, w, h, r) {
-        // Stand-in, used until the photograph of the painting is in place.
-        const bg = c.createRadialGradient(w * 0.5, h * 0.42, h * 0.08, w * 0.5, h * 0.5, h * 0.8);
-        bg.addColorStop(0, '#3b3a3c');
-        bg.addColorStop(1, '#1b1b1e');
-        c.fillStyle = bg;
-        c.fillRect(0, 0, w, h);
-
-        const cx = w * 0.5, cy = h * 0.5, R = Math.min(w, h) * 0.41;
-
-        c.fillStyle = 'rgba(0,0,0,0.45)';           // the tondo stands off the wall
-        c.beginPath();
-        c.arc(cx + R * 0.04, cy + R * 0.05, R, 0, Math.PI * 2);
-        c.fill();
-
-        const green = c.createRadialGradient(cx, cy - R * 0.25, R * 0.1, cx, cy, R);
-        green.addColorStop(0, '#31584a');
-        green.addColorStop(0.7, '#24473b');
-        green.addColorStop(1, '#152d27');
-        c.fillStyle = green;
-        c.beginPath();
-        c.arc(cx, cy, R, 0, Math.PI * 2);
-        c.fill();
-
-        c.save();
-        c.beginPath();
-        c.arc(cx, cy, R, 0, Math.PI * 2);
-        c.clip();
-
-        const fx = cx, fy = cy + R * 0.04;
-        function petal(angle, len, wide, col) {
-          c.save();
-          c.translate(fx, fy);
-          c.rotate(angle);
-          c.fillStyle = col;
-          c.beginPath();
-          c.moveTo(0, 0);
-          c.bezierCurveTo(-wide, -len * 0.45, -wide * 0.95, -len, 0, -len);
-          c.bezierCurveTo(wide * 0.95, -len, wide, -len * 0.45, 0, 0);
-          c.closePath();
-          c.fill();
-          c.restore();
-        }
-
-        const outer = ['#ece3d4', '#f4eee4', '#e3d9c8', '#f1eadf', '#e8dece', '#f6f2ea'];
-        for (let i = 0; i < 9; i++) {
-          const a = (i / 9) * Math.PI * 2 + 0.3;
-          petal(a, R * (0.92 + r() * 0.14), R * (0.40 + r() * 0.12), outer[i % outer.length]);
-        }
-        for (let i = 0; i < 7; i++) {
-          const a = (i / 7) * Math.PI * 2 - 0.5;
-          petal(a, R * (0.60 + r() * 0.14), R * (0.30 + r() * 0.09), i % 2 ? '#fbf7f0' : '#eae1d2');
-        }
-        for (let i = 0; i < 5; i++) {
-          const a = (i / 5) * Math.PI * 2 + 1.1;
-          petal(a, R * (0.36 + r() * 0.1), R * (0.22 + r() * 0.06), i % 2 ? '#fdfaf4' : '#efe7d9');
-        }
-
-        // the flower turns away from the light at its edges
-        const shade = c.createRadialGradient(fx - R * 0.2, fy - R * 0.25, R * 0.1, fx, fy, R);
-        shade.addColorStop(0, 'rgba(255,250,240,0.18)');
-        shade.addColorStop(0.62, 'rgba(90,80,70,0)');
-        shade.addColorStop(1, 'rgba(40,44,40,0.42)');
-        c.fillStyle = shade;
-        c.fillRect(cx - R, cy - R, R * 2, R * 2);
-
-        // stamens
-        const sx = fx - R * 0.06, sy = fy - R * 0.09;
-        c.fillStyle = 'rgba(140,100,40,0.16)';
-        c.beginPath();
-        c.ellipse(sx, sy + R * 0.04, R * 0.24, R * 0.19, 0, 0, Math.PI * 2);
-        c.fill();
-        for (let i = 0; i < 130; i++) {
-          const a = r() * Math.PI * 2;
-          const rad = Math.sqrt(r()) * R * 0.22;
-          const x = sx + Math.cos(a) * rad;
-          const y = sy + Math.sin(a) * rad * 0.82;
-          c.strokeStyle = ['#d6a733', '#b88a24', '#eccb72'][i % 3];
-          c.lineWidth = Math.max(0.5, R * 0.022);
-          c.beginPath();
-          c.moveTo(x, y);
-          c.lineTo(x + (sx - x) * 0.3, y + (sy - y) * 0.3 + R * 0.035);
-          c.stroke();
-        }
-        c.fillStyle = '#f6dd9a';
-        for (let i = 0; i < 14; i++) {
-          const a = r() * Math.PI * 2;
-          const rad = Math.sqrt(r()) * R * 0.17;
-          c.fillRect(sx + Math.cos(a) * rad, sy + Math.sin(a) * rad * 0.82, Math.max(0.6, R * 0.025), Math.max(0.6, R * 0.025));
-        }
-        c.restore();
-
-        c.strokeStyle = 'rgba(255,245,225,0.22)';   // light on the rim of the canvas
-        c.lineWidth = Math.max(0.6, R * 0.02);
-        c.beginPath();
-        c.arc(cx, cy, R - c.lineWidth / 2, Math.PI * 0.75, Math.PI * 1.9);
-        c.stroke();
-        grain(c, w, h, r, 0.045);
-      }
     }
   ];
 
@@ -637,7 +496,7 @@
   works.forEach(function (art, i) {
     art.id = i;
     art.no = String(i + 1).padStart(2, '0');
-    art.artist = art.artist || 'Lapsina';
+    if (!art.artist && art.paint) art.artist = 'Lapsina';
     art.image = null;
 
     // A work may be a photograph of a real painting. Until the file loads —
@@ -658,7 +517,8 @@
       ctx.rect(0, 0, w, h);
       ctx.clip();
       if (art.image) cover(ctx, art.image, w, h);
-      else art.paint(ctx, w, h, mulberry32(art.seed));
+      else if (art.paint) art.paint(ctx, w, h, mulberry32(art.seed));
+      // no paint and no photograph yet: the frame stays empty
       ctx.restore();
     };
   });

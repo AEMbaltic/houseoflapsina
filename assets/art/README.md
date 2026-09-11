@@ -1,23 +1,23 @@
 # Photographs of real paintings
 
-A work in `assets/artworks.js` can carry a `src` pointing at a file in here:
+A work in `assets/artworks.js` can be a photograph instead of a drawing:
 
 ```js
 {
   title: 'Paeonia lactiflora',
+  year: 2025,
+  medium: 'Oil on canvas',
   aspect: [1, 1],
-  src: 'assets/art/paeonia-lactiflora.jpg',
-  paint: function (c, w, h, r) { /* drawn stand-in, used until the file exists */ }
+  src: 'assets/art/paeonia-lactiflora.jpg'
 }
 ```
 
-The photograph replaces the drawing everywhere — the frame on the wall, the
-title card, and the viewer — as soon as it loads. If the file is missing the
-drawing simply stays, so nothing breaks.
+It is shown as it is — no generated stand-in, no invented wall label. Until the
+file is here, that frame hangs empty.
 
 Crop the photograph to the edge of the canvas: the game draws its own gilt
 frame and mount, so a picture that still has its physical frame in it ends up
-framed twice. Match `aspect` to the crop ([1, 1] here), keep the longest side
-around 1600px, and save as JPEG.
+framed twice. Match `aspect` to the crop, keep the longest side around 1600px,
+and save as JPEG.
 
 Wanted here: `paeonia-lactiflora.jpg`

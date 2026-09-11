@@ -119,7 +119,7 @@
   // Four works off the real wall, rendered once.
   const WALL = [
     { id: 0, x: 50, w: 36, h: 27 },
-    { id: 12, x: 104, w: 28, h: 28 },
+    { id: 1, x: 104, w: 24, h: 31 },
     { id: 8, x: 216, w: 28, h: 28 },
     { id: 11, x: 270, w: 30, h: 23 }
   ];

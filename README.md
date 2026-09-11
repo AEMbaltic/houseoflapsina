@@ -1,7 +1,7 @@
 # House of Lapsina
 
 A small browser game that is also an art gallery. You play a girl called Lapsina,
-walking around her house with the arrow keys. Thirteen of her paintings hang on the
+walking around her house with the arrow keys. Twelve paintings hang on the
 walls; stand in front of one and press space to look at it properly.
 
 No build step, no dependencies, no images — open `index.html` and it runs.
@@ -90,17 +90,15 @@ Give the work a `src` as well, pointing at a file in `assets/art/`:
   year: 2025,
   medium: 'Oil on canvas',
   aspect: [1, 1],
-  room: 'grand',                             // optional: ask for a room
-  src: 'assets/art/paeonia-lactiflora.jpg',
-  paint: function (c, w, h, r) { /* stands in until the file is there */ }
+  src: 'assets/art/paeonia-lactiflora.jpg'
 }
 ```
 
-The photograph replaces the drawing everywhere — the frame on the wall, the
-title card, the viewer — the moment it loads, and a missing file just leaves
-the drawing in place. Crop the photograph to the edge of the canvas: the game
-draws its own gilt frame, so a picture that still has its real frame in it ends
-up framed twice. Match `aspect` to the crop.
+A work like this carries no `paint` function and no `note`: it is a photograph
+of a real painting, shown as it is. Until the file is in place its frame simply
+hangs empty. Crop the photograph to the edge of the canvas — the game draws its
+own gilt frame, so a picture that still has its real frame in it ends up framed
+twice — and match `aspect` to the crop.
 
 `room` takes a key from `ROOMS` in `assets/game.js` (`entrance`, `grand`,
 `north`, `west`, `east`) and gets first refusal on that room's walls; works

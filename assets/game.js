@@ -513,6 +513,7 @@
     year: document.getElementById('artYear'),
     medium: document.getElementById('artMedium'),
     note: document.getElementById('artNote'),
+    dot: document.getElementById('artDot'),
     room: document.getElementById('roomName'),
     seen: document.getElementById('seenCount'),
     total: document.getElementById('totalCount'),
@@ -565,7 +566,10 @@
     els.artist.textContent = art.artist;
     els.year.textContent = art.year;
     els.medium.textContent = art.medium;
-    els.note.textContent = art.note;
+    els.artist.hidden = !art.artist;          // a work need not carry either
+    els.dot.hidden = !art.artist;
+    els.note.textContent = art.note || '';
+    els.note.hidden = !art.note;
     paintViewer(art);
     if (!seen.has(id)) {
       seen.add(id);
