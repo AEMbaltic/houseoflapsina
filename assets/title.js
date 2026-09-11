@@ -119,15 +119,23 @@
   // Four works off the real wall, rendered once.
   const WALL = [
     { id: 0, x: 50, w: 36, h: 27 },
-    { id: 1, x: 104, w: 24, h: 31 },
+    { id: 12, x: 104, w: 28, h: 28 },
     { id: 8, x: 216, w: 28, h: 28 },
     { id: 11, x: 270, w: 30, h: 23 }
   ];
   WALL.forEach(function (p) {
-    const art = window.ARTWORKS[p.id];
     p.canvas = offscreen(p.w, p.h);
-    art.render(p.canvas.getContext('2d'), p.w, p.h);
+    window.ARTWORKS[p.id].render(p.canvas.getContext('2d'), p.w, p.h);
     p.y = 110;
+  });
+
+  addEventListener('lapsina:art', function (e) {
+    WALL.forEach(function (p) {
+      if (p.id !== e.detail.id) return;
+      const cc = p.canvas.getContext('2d');
+      cc.clearRect(0, 0, p.w, p.h);
+      window.ARTWORKS[p.id].render(cc, p.w, p.h);
+    });
   });
 
   const WALL_TOP = 84;

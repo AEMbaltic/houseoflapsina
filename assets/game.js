@@ -90,17 +90,28 @@
 
   const pools = ROOMS.map(slotsFor);
   const hung = [];
-  for (let round = 0, i = 0; i < window.ARTWORKS.length && round < 12; round++) {
-    for (let p = 0; p < pools.length && i < window.ARTWORKS.length; p++) {
-      if (pools[p][round]) {
-        const slot = pools[p][round];
-        slot.art = window.ARTWORKS[i++];
-        slot.cx = slot.tx * TILE + TILE;             // centre of the frame
-        slot.cy = slot.ty * TILE - 6;                // hung high, above her head
-        slot.floorY = (slot.ty + 1) * TILE;          // top of the floor in front
-        hung.push(slot);
-      }
-    }
+
+  function hang(slot, art) {
+    slot.art = art;
+    slot.cx = slot.tx * TILE + TILE;             // centre of the frame
+    slot.cy = slot.ty * TILE - 6;                // hung high, above her head
+    slot.floorY = (slot.ty + 1) * TILE;          // top of the floor in front
+    hung.push(slot);
+  }
+
+  // A work can ask for a room of its own (art.room); it gets first refusal on
+  // that room's walls. Everything else goes round the rooms in turn, so no
+  // room is left bare.
+  const waiting = [];
+  window.ARTWORKS.forEach(function (art) {
+    const p = art.room ? ROOMS.findIndex(function (r) { return r.key === art.room; }) : -1;
+    if (p >= 0 && pools[p].length) hang(pools[p].shift(), art);
+    else waiting.push(art);
+  });
+  for (let i = 0, p = 0; i < waiting.length; p++) {
+    if (pools.every(function (q) { return !q.length; })) break;
+    const pool = pools[p % pools.length];
+    if (pool.length) hang(pool.shift(), waiting[i++]);
   }
   hung.sort(function (a, b) { return a.art.id - b.art.id; });
 
@@ -810,6 +821,14 @@
   }
   if (window.__boot) addEventListener('lapsina:start', welcome, { once: true });
   else welcome();
+
+  // A photographed work finishing its download: re-hang the real picture.
+  addEventListener('lapsina:art', function (e) {
+    hung.forEach(function (s) {
+      if (s.art.id === e.detail.id) bakeFrame(s);
+    });
+    if (viewerOpen && current === e.detail.id) paintViewer(window.ARTWORKS[current]);
+  });
 
   // Handy from the browser console when rearranging the house.
   window.__lapsina = {

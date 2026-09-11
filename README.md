@@ -1,7 +1,7 @@
 # House of Lapsina
 
 A small browser game that is also an art gallery. You play a girl called Lapsina,
-walking around her house with the arrow keys. Twelve of her paintings hang on the
+walking around her house with the arrow keys. Thirteen of her paintings hang on the
 walls; stand in front of one and press space to look at it properly.
 
 No build step, no dependencies, no images — open `index.html` and it runs.
@@ -44,7 +44,7 @@ you are standing in is lit; the rest of the house is turned down.
 ```
 index.html          markup: canvas, HUD, artwork viewer, help card
 assets/styles.css   everything outside the canvas
-assets/artworks.js  the twelve paintings — each one a small drawing program
+assets/artworks.js  the paintings — a drawing program each, or a photograph
 assets/sprite.js    Lapsina, drawn from rectangles (no sprite sheet)
 assets/title.js     the title card, its pixel font and its little gallery
 assets/game.js      tile map, collision, camera, lighting, interaction
@@ -80,8 +80,31 @@ It is hung automatically: the game finds every stretch of wall that has floor in
 front of it and space above, then deals the works out room by room so no room is
 left bare. Slots left over stay empty wall.
 
-Swapping in real images instead is a small change — load an `Image` and have
-`paint` call `c.drawImage(img, 0, 0, w, h)`.
+### Hanging a photograph of a real painting
+
+Give the work a `src` as well, pointing at a file in `assets/art/`:
+
+```js
+{
+  title: 'Paeonia lactiflora',
+  year: 2025,
+  medium: 'Oil on canvas',
+  aspect: [1, 1],
+  room: 'grand',                             // optional: ask for a room
+  src: 'assets/art/paeonia-lactiflora.jpg',
+  paint: function (c, w, h, r) { /* stands in until the file is there */ }
+}
+```
+
+The photograph replaces the drawing everywhere — the frame on the wall, the
+title card, the viewer — the moment it loads, and a missing file just leaves
+the drawing in place. Crop the photograph to the edge of the canvas: the game
+draws its own gilt frame, so a picture that still has its real frame in it ends
+up framed twice. Match `aspect` to the crop.
+
+`room` takes a key from `ROOMS` in `assets/game.js` (`entrance`, `grand`,
+`north`, `west`, `east`) and gets first refusal on that room's walls; works
+without one are dealt out round the rooms in turn.
 
 ### Rearranging the rooms
 
