@@ -246,18 +246,27 @@
 
     wctx.fillStyle = 'rgba(0,0,0,0.35)';         // shadow on the wall
     wctx.fillRect(x + 1, y + 2, fw, fh);
-    wctx.fillStyle = '#c9a961';                  // gilt frame
-    wctx.fillRect(x, y, fw, fh);
-    wctx.fillStyle = '#8a6f38';
-    wctx.fillRect(x, y + fh - 1, fw, 1);
-    wctx.fillRect(x + fw - 1, y, 1, fh);
-    wctx.fillStyle = '#efe6d6';                  // mount board
-    wctx.fillRect(x + 2, y + 2, fw - 4, fh - 4);
 
-    const iw = fw - 6, ih = fh - 6;
+    let inset = 3;
+    if (slot.art.framed) {
+      // the photograph has the painting's own frame in it: no second frame
+      wctx.fillStyle = '#1a1420';
+      wctx.fillRect(x, y, fw, fh);
+      inset = 1;
+    } else {
+      wctx.fillStyle = '#c9a961';                // gilt frame
+      wctx.fillRect(x, y, fw, fh);
+      wctx.fillStyle = '#8a6f38';
+      wctx.fillRect(x, y + fh - 1, fw, 1);
+      wctx.fillRect(x + fw - 1, y, 1, fh);
+      wctx.fillStyle = '#efe6d6';                // mount board
+      wctx.fillRect(x + 2, y + 2, fw - 4, fh - 4);
+    }
+
+    const iw = fw - inset * 2, ih = fh - inset * 2;
     const art = offscreen(iw, ih);
     slot.art.render(art.getContext('2d'), iw, ih);
-    wctx.drawImage(art, x + 3, y + 3);
+    wctx.drawImage(art, x + inset, y + inset);
 
     // little brass plaque, where there is room for one
     const plaqueY = y + fh + 2;
@@ -513,6 +522,7 @@
     year: document.getElementById('artYear'),
     medium: document.getElementById('artMedium'),
     note: document.getElementById('artNote'),
+    matte: document.querySelector('#viewer .matte'),
     dot: document.getElementById('artDot'),
     room: document.getElementById('roomName'),
     seen: document.getElementById('seenCount'),
@@ -566,6 +576,8 @@
     els.artist.textContent = art.artist;
     els.year.textContent = art.year;
     els.medium.textContent = art.medium;
+    els.medium.hidden = !art.medium;
+    els.matte.classList.toggle('bare', !!art.framed);
     els.artist.hidden = !art.artist;          // a work need not carry either
     els.dot.hidden = !art.artist;
     els.note.textContent = art.note || '';

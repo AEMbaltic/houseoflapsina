@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>House of Lapsina — paintings</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%23241f2c'/><rect x='3' y='3' width='10' height='8' fill='%23e0b25f'/></svg>" />
+<link rel="stylesheet" href="assets/admin.css" />
+</head>
+<body>
+
+<header class="bar">
+  <div>
+    <h1>Paintings</h1>
+    <p class="sub">What hangs in the house. Add a painting, press publish, and it is on the website a minute later.</p>
+  </div>
+  <a class="ghost" href="index.html">open the gallery →</a>
+</header>
+
+<main>
+  <section id="list" class="list"></section>
+
+  <div class="add">
+    <label class="drop" id="drop">
+      <input type="file" id="picker" accept="image/*" multiple hidden />
+      <span class="drop-title">Add a painting</span>
+      <span class="drop-sub">Choose a photo, or drag one here. Several at once is fine.</span>
+    </label>
+  </div>
+
+  <section class="publish">
+    <h2>Publish</h2>
+    <p class="hint">
+      Publishing saves the photos and the list straight to the website's code on GitHub,
+      which puts them online. You need a GitHub token with permission to write to this one
+      repository — make one at
+      <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → fine-grained tokens</a>,
+      give it <b>Contents: read and write</b> on <b>houseoflapsina</b>, and paste it here.
+    </p>
+
+    <div class="row">
+      <label class="field grow">
+        <span>GitHub token</span>
+        <input type="password" id="token" placeholder="github_pat_…" autocomplete="off" />
+      </label>
+      <label class="check">
+        <input type="checkbox" id="remember" />
+        <span>Remember it on this device</span>
+      </label>
+    </div>
+
+    <details class="advanced">
+      <summary>Where it publishes</summary>
+      <div class="row">
+        <label class="field"><span>Owner</span><input type="text" id="owner" value="AEMbaltic" /></label>
+        <label class="field"><span>Repository</span><input type="text" id="repo" value="houseoflapsina" /></label>
+        <label class="field"><span>Branch</span><input type="text" id="branch" value="claude/art-gallery-game-awio0i" /></label>
+      </div>
+    </details>
+
+    <div class="actions">
+      <button id="publish" class="primary" type="button">Publish to the website</button>
+      <button id="download" class="ghost" type="button">Download the list instead</button>
+    </div>
+    <p class="status" id="status"></p>
+  </section>
+</main>
+
+<script src="assets/gallery.js"></script>
+<script src="assets/admin.js"></script>
+</body>
+</html>

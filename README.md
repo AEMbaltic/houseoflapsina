@@ -44,7 +44,9 @@ you are standing in is lit; the rest of the house is turned down.
 ```
 index.html          markup: canvas, HUD, artwork viewer, help card
 assets/styles.css   everything outside the canvas
-assets/artworks.js  the paintings — a drawing program each, or a photograph
+assets/gallery.js   the real paintings, written by the admin page
+assets/artworks.js  the drawn paintings, and the merge of the two lists
+admin.html          the admin page: add paintings, publish them
 assets/sprite.js    Lapsina, drawn from rectangles (no sprite sheet)
 assets/title.js     the title card, its pixel font and its little gallery
 assets/game.js      tile map, collision, camera, lighting, interaction
@@ -82,7 +84,12 @@ left bare. Slots left over stay empty wall.
 
 ### Hanging a photograph of a real painting
 
-Give the work a `src` as well, pointing at a file in `assets/art/`:
+Open **`/admin.html`** on the site, drop the photo in, fill in the title, year
+and medium, and press publish. It shrinks the photo, writes it to
+`assets/art/`, rewrites `assets/gallery.js`, and the deploy puts it online.
+Nothing else to do.
+
+`assets/gallery.js` is just a list, if you would rather edit it by hand:
 
 ```js
 {
@@ -94,15 +101,15 @@ Give the work a `src` as well, pointing at a file in `assets/art/`:
 }
 ```
 
-A work like this carries no `paint` function and no `note`: it is a photograph
-of a real painting, shown as it is. Until the file is in place its frame simply
-hangs empty. Crop the photograph to the edge of the canvas — the game draws its
-own gilt frame, so a picture that still has its real frame in it ends up framed
-twice — and match `aspect` to the crop.
+Real paintings take the best walls and the drawn ones fill up whatever is left,
+to at least twelve — so every painting added pushes a drawn one out. They carry
+no invented wall label. `framed: true` means the photograph already shows the
+painting's own frame, so the game does not draw a second one around it; leave it
+off for a photograph cropped to the canvas edge.
 
-`room` takes a key from `ROOMS` in `assets/game.js` (`entrance`, `grand`,
-`north`, `west`, `east`) and gets first refusal on that room's walls; works
-without one are dealt out round the rooms in turn.
+A work may also name a `room` — a key from `ROOMS` in `assets/game.js`
+(`entrance`, `grand`, `north`, `west`, `east`) — and gets first refusal on that
+room's walls.
 
 ### Rearranging the rooms
 

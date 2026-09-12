@@ -138,13 +138,6 @@
       }
     },
     {
-      title: 'Paeonia lactiflora',
-      year: 2025,
-      medium: 'Oil on canvas',
-      aspect: [1, 1],
-      src: 'assets/art/paeonia-lactiflora.jpg'
-    },
-    {
       title: 'Harbour, Blue Hour',
       year: 2023,
       medium: 'Watercolour',
@@ -492,8 +485,23 @@
     ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
   }
 
+  // Real paintings (assets/gallery.js, managed from /admin.html) take the best
+  // walls; the drawn ones fill up whatever is left, to at least twelve.
+  const real = (global.GALLERY || []).map(function (g) {
+    return {
+      title: g.title || 'Untitled',
+      year: g.year || '',
+      medium: g.medium || '',
+      artist: g.artist || '',
+      aspect: g.aspect || [1, 1],
+      framed: !!g.framed,
+      src: g.src
+    };
+  });
+  const hanging = real.concat(works).slice(0, Math.max(12, real.length));
+
   // Give every work an id, a catalogue number, and a cached render helper.
-  works.forEach(function (art, i) {
+  hanging.forEach(function (art, i) {
     art.id = i;
     art.no = String(i + 1).padStart(2, '0');
     if (!art.artist && art.paint) art.artist = 'Lapsina';
@@ -523,5 +531,5 @@
     };
   });
 
-  global.ARTWORKS = works;
+  global.ARTWORKS = hanging;
 })(window);
