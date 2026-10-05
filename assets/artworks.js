@@ -478,15 +478,17 @@
     }
   ];
 
-  // Draw a photograph so it fills the frame, cropping the overhang.
-  function cover(ctx, img, w, h) {
-    const s = Math.max(w / img.width, h / img.height);
-    const dw = img.width * s, dh = img.height * s;
-    ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+  // Focus on the supplied frame while retaining the complete source photograph.
+  function photograph(ctx, img, w, h, crop) {
+    const rect = crop || [0, 0, 1, 1];
+    const sx = rect[0] * img.width, sy = rect[1] * img.height;
+    const sw = rect[2] * img.width, sh = rect[3] * img.height;
+    const scale = Math.min(w / sw, h / sh);
+    const dw = sw * scale, dh = sh * scale;
+    ctx.drawImage(img, sx, sy, sw, sh, (w - dw) / 2, (h - dh) / 2, dw, dh);
   }
 
-  // Real paintings (assets/gallery.js, managed from /admin.html) take the best
-  // walls; the drawn ones fill up whatever is left, to at least twelve.
+  // A published collection replaces the demo paintings entirely.
   const real = (global.GALLERY || []).map(function (g) {
     return {
       title: g.title || 'Untitled',
@@ -495,10 +497,11 @@
       artist: g.artist || '',
       aspect: g.aspect || [1, 1],
       framed: !!g.framed,
+      crop: g.crop,
       src: g.src
     };
   });
-  const hanging = real.concat(works).slice(0, Math.max(12, real.length));
+  const hanging = real.length ? real : works;
 
   // Give every work an id, a catalogue number, and a cached render helper.
   hanging.forEach(function (art, i) {
@@ -524,7 +527,7 @@
       ctx.beginPath();
       ctx.rect(0, 0, w, h);
       ctx.clip();
-      if (art.image) cover(ctx, art.image, w, h);
+      if (art.image) photograph(ctx, art.image, w, h, art.crop);
       else if (art.paint) art.paint(ctx, w, h, mulberry32(art.seed));
       // no paint and no photograph yet: the frame stays empty
       ctx.restore();

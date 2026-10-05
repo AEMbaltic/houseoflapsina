@@ -1,10 +1,11 @@
 # House of Lapsina
 
 A small browser game that is also an art gallery. You play a girl called Lapsina,
-walking around her house with the arrow keys. Twelve paintings hang on the
+walking around her house with the arrow keys. Seven paintings hang on the
 walls; stand in front of one and press space to look at it properly.
 
-No build step, no dependencies, no images — open `index.html` and it runs.
+No build step or dependencies. Artwork photographs are included in `assets/art/`.
+Open `index.html` and it runs.
 
 ## Playing
 
@@ -52,7 +53,7 @@ assets/title.js     the title card, its pixel font and its little gallery
 assets/game.js      tile map, collision, camera, lighting, interaction
 ```
 
-Nothing is loaded from disk or the network. The house is a tile map that is
+The artwork photographs load from `assets/art/`. The house is a tile map that is
 painted once into an off-screen canvas at startup; each frame copies the visible
 slice of it, then draws the furniture and Lapsina on top, sorted back to front.
 
@@ -101,11 +102,17 @@ Nothing else to do.
 }
 ```
 
-Real paintings take the best walls and the drawn ones fill up whatever is left,
-to at least twelve — so every painting added pushes a drawn one out. They carry
+The published collection replaces the demo paintings. The generated demo is used
+only when the collection is empty. Uploaded works carry
 no invented wall label. `framed: true` means the photograph already shows the
 painting's own frame, so the game does not draw a second one around it; leave it
 off for a photograph cropped to the canvas edge.
+
+The current seven images retain their complete supplied compositions as optimized
+JPEGs. Optional `crop: [x, y, width, height]` values use fractions of the image to
+focus the game and viewer on the gold frame. The admin preserves these values.
+Labels other than the existing Paeonia title are descriptive working titles;
+unconfirmed years and media are omitted.
 
 A work may also name a `room` — a key from `ROOMS` in `assets/game.js`
 (`entrance`, `grand`, `north`, `west`, `east`) — and gets first refusal on that

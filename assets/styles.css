@@ -260,6 +260,8 @@ body.touch #touch { display: flex; }
 }
 
 .viewer-art {
+  flex: 1 1 0;
+  min-width: 0;
   padding: 26px;
   display: flex;
   align-items: center;
@@ -373,7 +375,7 @@ body.touch #touch { display: flex; }
 
 @media (max-width: 860px) {
   .viewer-box { flex-direction: column; }
-  .viewer-art { border-right: 0; border-bottom: 1px solid var(--line); border-radius: 10px 10px 0 0; padding: 18px; }
+  .viewer-art { flex: 0 0 auto; border-right: 0; border-bottom: 1px solid var(--line); border-radius: 10px 10px 0 0; padding: 18px; }
   .viewer-info { width: auto; flex: 1 1 auto; padding: 22px; }
   .viewer-info h2 { font-size: 22px; }
   .matte { padding: 12px; border-width: 7px; }

@@ -17,7 +17,7 @@
   const HALL = 2;
 
   const SPEED = 64;          // pixels per second
-  const STORE_KEY = 'lapsina:seen';
+  const STORE_KEY = 'lapsina:seen:collection';
 
   // ---------------------------------------------------------------- the house
 
@@ -535,12 +535,15 @@
   let current = 0;
   let nearest = null;
 
-  const seen = new Set(load());
+  function workKey(art) { return art.src || art.title; }
+  const catalogue = new Set(hung.map(function (s) { return workKey(s.art); }));
+  const seen = new Set(load().filter(function (key) { return catalogue.has(key); }));
 
   function load() {
     try {
       const raw = localStorage.getItem(STORE_KEY);
-      return raw ? JSON.parse(raw) : [];
+      const stored = raw ? JSON.parse(raw) : [];
+      return Array.isArray(stored) ? stored : [];
     } catch (err) { return []; }
   }
   function save() {
@@ -549,13 +552,18 @@
 
   els.total.textContent = String(hung.length);
   els.seen.textContent = String(seen.size);
+  document.getElementById('collectionCount').textContent = String(hung.length);
 
   function paintViewer(art) {
     const box = viewer.querySelector('.viewer-art');
-    const maxW = Math.min(560, box.clientWidth - 90, window.innerWidth - 140);
+    const style = getComputedStyle(box);
+    const matte = getComputedStyle(els.matte);
+    const border = parseFloat(matte.paddingLeft) + parseFloat(matte.paddingRight) +
+      parseFloat(matte.borderLeftWidth) + parseFloat(matte.borderRightWidth);
+    const maxW = Math.min(560, box.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight) - border);
     const maxH = window.innerHeight - 220;
     const ratio = art.aspect[0] / art.aspect[1];
-    let w = Math.max(180, maxW);
+    let w = Math.max(1, maxW);
     let h = w / ratio;
     if (h > maxH && maxH > 160) { h = maxH; w = h * ratio; }
     const dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -579,12 +587,12 @@
     els.medium.hidden = !art.medium;
     els.matte.classList.toggle('bare', !!art.framed);
     els.artist.hidden = !art.artist;          // a work need not carry either
-    els.dot.hidden = !art.artist;
+    els.dot.hidden = !art.artist || !art.year;
     els.note.textContent = art.note || '';
     els.note.hidden = !art.note;
     paintViewer(art);
-    if (!seen.has(id)) {
-      seen.add(id);
+    if (!seen.has(workKey(art))) {
+      seen.add(workKey(art));
       save();
       els.seen.textContent = String(seen.size);
       if (seen.size === hung.length) toast('Every painting seen. Lapsina is very pleased.');
@@ -792,7 +800,7 @@
 
     // mark on paintings already visited
     hung.forEach(function (s) {
-      if (!seen.has(s.art.id)) return;
+      if (!seen.has(workKey(s.art))) return;
       const f = s.frame;
       ctx.fillStyle = 'rgba(201,169,97,0.9)';
       ctx.fillRect(f.x + f.w - 2, f.y - 3, 2, 2);

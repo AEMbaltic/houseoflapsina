@@ -24,6 +24,7 @@
       src: g.src,
       aspect: g.aspect || [1, 1],
       framed: !!g.framed,
+      crop: g.crop,
       data: null              // base64 of a photograph waiting to be published
     };
   });
@@ -221,7 +222,8 @@
         medium: (w.medium || '').trim() || undefined,
         src: w.src || fileNameFor(w, i),
         aspect: w.aspect,
-        framed: w.framed || undefined
+        framed: w.framed || undefined,
+        crop: w.crop
       };
     });
     return '/* The real paintings.\n' +

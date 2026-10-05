@@ -20,4 +20,6 @@ frame and mount, so a picture that still has its physical frame in it ends up
 framed twice. Match `aspect` to the crop, keep the longest side around 1600px,
 and save as JPEG.
 
-Wanted here: `paeonia-lactiflora.jpg`
+The seven supplied artworks are included here as optimized JPEGs. Their originals
+retain the wall and lighting; `crop` values in `assets/gallery.js` focus the viewer
+on the existing gold frames without modifying the source composition.

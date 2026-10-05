@@ -123,7 +123,8 @@
     { id: 8, x: 216, w: 28, h: 28 },
     { id: 11, x: 270, w: 30, h: 23 }
   ];
-  WALL.forEach(function (p) {
+  WALL.forEach(function (p, i) {
+    p.id = Math.round(i * (window.ARTWORKS.length - 1) / (WALL.length - 1));
     p.canvas = offscreen(p.w, p.h);
     window.ARTWORKS[p.id].render(p.canvas.getContext('2d'), p.w, p.h);
     p.y = 110;
