@@ -495,6 +495,7 @@
       year: g.year || '',
       medium: g.medium || '',
       artist: g.artist || '',
+      note: g.note || '',
       aspect: g.aspect || [1, 1],
       framed: !!g.framed,
       crop: g.crop,

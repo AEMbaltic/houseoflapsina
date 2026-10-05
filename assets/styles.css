@@ -314,6 +314,7 @@ body.touch #touch { display: flex; }
 }
 
 .viewer-info h2 {
+  overflow-wrap: anywhere;
   margin: 0 0 6px;
   font-size: 26px;
   line-height: 1.15;
@@ -325,6 +326,8 @@ body.touch #touch { display: flex; }
 .medium { margin: 0 0 18px; font-size: 13px; color: var(--dim); font-style: italic; }
 
 .note {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   margin: 0 0 22px;
   font-size: 14px;
   line-height: 1.6;

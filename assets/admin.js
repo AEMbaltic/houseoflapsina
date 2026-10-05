@@ -14,6 +14,15 @@
   const $ = function (id) { return document.getElementById(id); };
   const listEl = $('list');
   const statusEl = $('status');
+  let dirty = false;
+  let preparing = 0;
+
+  function changed() { dirty = true; }
+  addEventListener('beforeunload', function (event) {
+    if (!dirty) return;
+    event.preventDefault();
+    event.returnValue = '';
+  });
 
   // Works already on the site, plus anything picked but not yet published.
   const works = (window.GALLERY || []).map(function (g) {
@@ -21,6 +30,8 @@
       title: g.title || '',
       year: g.year || '',
       medium: g.medium || '',
+      artist: g.artist || '',
+      note: g.note || '',
       src: g.src,
       aspect: g.aspect || [1, 1],
       framed: !!g.framed,
@@ -45,7 +56,8 @@
 
   function fileNameFor(work, i) {
     const base = slug(work.title) || ('painting-' + (i + 1));
-    return 'assets/art/' + base + '.jpg';
+    if (!work.uploadPath) work.uploadPath = 'assets/art/' + base + '-' + crypto.randomUUID() + '.jpg';
+    return work.uploadPath;
   }
 
   // ------------------------------------------------------------ the pictures
@@ -79,25 +91,32 @@
   async function addFiles(files) {
     const chosen = Array.prototype.slice.call(files).filter(function (f) { return /^image\//.test(f.type); });
     if (!chosen.length) return;
+    preparing++;
+    $('publish').disabled = true;
     say('Reading ' + chosen.length + ' photo' + (chosen.length > 1 ? 's' : '') + '…');
     for (let i = 0; i < chosen.length; i++) {
       try {
         const out = await prepare(chosen[i]);
         works.push({
           title: chosen[i].name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' '),
-          year: new Date().getFullYear(),
-          medium: 'Oil on canvas',
+          year: '',
+          medium: '',
+          artist: '',
+          note: '',
           src: null,
           aspect: out.aspect,
           framed: true,
           data: out.data,
           preview: out.preview
         });
+        changed();
       } catch (err) {
         say(String(err.message || err), 'bad');
       }
     }
     render();
+    preparing--;
+    $('publish').disabled = preparing > 0;
     say(chosen.length + ' added. Fill in the details, then publish.');
   }
 
@@ -128,6 +147,8 @@
       fields.className = 'fields';
 
       fields.appendChild(field('Title', w.title, function (v) { w.title = v; }));
+      fields.appendChild(field('Artist', w.artist, function (v) { w.artist = v; }));
+      fields.appendChild(field('Description', w.note, function (v) { w.note = v; }, true));
 
       const row = document.createElement('div');
       row.className = 'row';
@@ -140,7 +161,7 @@
       const box = document.createElement('input');
       box.type = 'checkbox';
       box.checked = w.framed;
-      box.addEventListener('change', function () { w.framed = box.checked; });
+      box.addEventListener('change', function () { w.framed = box.checked; changed(); });
       const label = document.createElement('span');
       label.textContent = 'The photo already includes the painting’s frame';
       check.appendChild(box);
@@ -166,10 +187,42 @@
       spacer.className = 'spacer';
       foot.appendChild(spacer);
 
+      const replacement = document.createElement('input');
+      replacement.type = 'file';
+      replacement.accept = 'image/*';
+      replacement.hidden = true;
+      replacement.setAttribute('aria-label', 'Replace picture for ' + w.title);
+      replacement.addEventListener('change', async function () {
+        const file = replacement.files[0];
+        if (!file) return;
+        preparing++;
+        $('publish').disabled = true;
+        try {
+          const out = await prepare(file);
+          w.data = out.data;
+          w.preview = out.preview;
+          w.aspect = out.aspect;
+          w.crop = undefined;
+          w.uploadPath = undefined;
+          w.src = null;
+          changed();
+          render();
+          say('Picture replaced. Ready to publish.');
+        } catch (err) {
+          say(String(err.message || err), 'bad');
+        } finally {
+          preparing--;
+          $('publish').disabled = preparing > 0;
+        }
+      });
+      foot.appendChild(replacement);
+      foot.appendChild(button('Replace picture', 'icon', function () { replacement.click(); }));
+
       foot.appendChild(button('↑', 'icon', function () { move(i, -1); }, i === 0));
       foot.appendChild(button('↓', 'icon', function () { move(i, 1); }, i === works.length - 1));
       foot.appendChild(button('Remove', 'icon danger', function () {
         works.splice(i, 1);
+        changed();
         render();
       }));
 
@@ -179,16 +232,16 @@
     });
   }
 
-  function field(label, value, onChange) {
+  function field(label, value, onChange, multiline) {
     const wrap = document.createElement('label');
     wrap.className = 'field grow';
     const span = document.createElement('span');
     span.textContent = label;
-    const input = document.createElement('input');
-    input.type = 'text';
+    const input = document.createElement(multiline ? 'textarea' : 'input');
+    if (multiline) input.rows = 4;
+    else input.type = 'text';
     input.value = value == null ? '' : value;
-    input.addEventListener('input', function () { onChange(input.value); });
-    input.addEventListener('change', render);
+    input.addEventListener('input', function () { onChange(input.value); changed(); });
     wrap.appendChild(span);
     wrap.appendChild(input);
     return wrap;
@@ -209,6 +262,7 @@
     if (to < 0 || to >= works.length) return;
     const item = works.splice(i, 1)[0];
     works.splice(to, 0, item);
+    changed();
     render();
   }
 
@@ -220,6 +274,8 @@
         title: (w.title || 'Untitled').trim(),
         year: w.year === '' ? undefined : (isNaN(Number(w.year)) ? String(w.year) : Number(w.year)),
         medium: (w.medium || '').trim() || undefined,
+        artist: (w.artist || '').trim() || undefined,
+        note: (w.note || '').trim() || undefined,
         src: w.src || fileNameFor(w, i),
         aspect: w.aspect,
         framed: w.framed || undefined,
@@ -287,6 +343,7 @@
   }
 
   $('publish').addEventListener('click', async function () {
+    if (preparing) return;
     const token = $('token').value.trim();
     if (!token) { say('Paste a GitHub token first — see the note above.', 'bad'); return; }
     if (!works.length) { say('There is nothing to publish yet.', 'bad'); return; }
@@ -295,6 +352,7 @@
     if (missing.length) { say('One of the paintings has no photo.', 'bad'); return; }
 
     $('publish').disabled = true;
+    document.querySelector('main').inert = true;
     try {
       const pending = works.filter(function (w) { return w.data; });
       for (let i = 0; i < works.length; i++) {
@@ -312,12 +370,16 @@
 
       if ($('remember').checked) {
         try { localStorage.setItem(KEY_TOKEN, token); } catch (err) { /* private mode */ }
+      } else {
+        try { localStorage.removeItem(KEY_TOKEN); } catch (err) { /* private mode */ }
       }
+      dirty = false;
       render();
       say('Published. The website rebuilds itself in a minute or two — then reload the gallery.', 'good');
     } catch (err) {
       say(String(err.message || err), 'bad');
     } finally {
+      document.querySelector('main').inert = false;
       $('publish').disabled = false;
     }
   });
