@@ -465,7 +465,7 @@
     drawPlant(c, 22, 188, true);
     drawPlant(c, 300, 186, true);
 
-    window.drawGirl(c, 160, 162, 'up', 0, false);
+    window.drawCharacter(c, 160, 162, 'up', 0, false);
 
     // ---- title band
     const band = c.createLinearGradient(0, 0, 0, WALL_TOP);
@@ -540,16 +540,14 @@
     if (!ready || !running) return;
     running = false;
     boot.classList.add('gone');
-    // let this very keypress finish before the game starts listening
-    setTimeout(function () { window.__boot = false; }, 0);
     setTimeout(function () {
       boot.hidden = true;
-      dispatchEvent(new CustomEvent('lapsina:start'));
+      window.openCharacterSelect(true);
     }, 460);
   }
 
   addEventListener('keydown', function (e) {
-    if (!window.__boot) return;
+    if (!window.__boot || window.__choosingCharacter) return;
     if (e.code === 'Space' || e.code === 'Enter' || e.code === 'KeyE' || e.key === ' ') {
       e.preventDefault();
       begin();

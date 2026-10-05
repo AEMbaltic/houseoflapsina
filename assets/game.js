@@ -420,7 +420,7 @@
   };
 
   addEventListener('keydown', function (e) {
-    if (window.__boot) return;              // the title card has the keyboard
+    if (window.__boot || window.__choosingCharacter) return;
     if (e.repeat && !viewerOpen) return;
     const dir = KEYMAP[e.code];
 
@@ -466,7 +466,7 @@
     btn.addEventListener('pointercancel', off);
   });
   document.getElementById('actBtn').addEventListener('click', function () {
-    if (nearest) openViewer(nearest.art.id);
+    if (nearest && !window.__choosingCharacter) openViewer(nearest.art.id);
   });
 
   // long-press on a control should do nothing at all
@@ -736,7 +736,7 @@
     if (keys.up || pad.up) dy -= 1;
     if (keys.down || pad.down) dy += 1;
 
-    player.moving = !viewerOpen && !helpOpen && !window.__boot && (dx !== 0 || dy !== 0);
+    player.moving = !viewerOpen && !helpOpen && !window.__boot && !window.__choosingCharacter && (dx !== 0 || dy !== 0);
 
     if (player.moving) {
       const len = Math.hypot(dx, dy) || 1;
@@ -810,7 +810,7 @@
     const items = [];
     BENCHES.forEach(function (b) { items.push({ y: b[1] * TILE + 14, draw: function () { drawBench(ctx, b[0], b[1]); } }); });
     PLANTS.forEach(function (p) { items.push({ y: p[1] * TILE + 15, draw: function () { drawPlant(ctx, p[0], p[1]); } }); });
-    items.push({ y: player.y, draw: function () { window.drawGirl(ctx, player.x, player.y, player.dir, player.frame, player.moving); } });
+    items.push({ y: player.y, draw: function () { window.drawCharacter(ctx, player.x, player.y, player.dir, player.frame, player.moving); } });
     items.sort(function (a, b) { return a.y - b.y; });
     items.forEach(function (it) { it.draw(); });
 

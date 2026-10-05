@@ -1,7 +1,7 @@
 # House of Lapsina
 
-A small browser game that is also an art gallery. You play a girl called Lapsina,
-walking around her house with the arrow keys. Seven paintings hang on the
+A small browser game that is also an art gallery. Choose Lapsina, a guy, or a fox,
+then walk around her house with the arrow keys. Seven paintings hang on the
 walls; stand in front of one and press space to look at it properly.
 
 No build step or dependencies. Artwork photographs are included in `assets/art/`.
@@ -11,7 +11,9 @@ Open `index.html` and it runs.
 
 | Key | Does |
 | --- | --- |
-| Space (title card) | enter the house |
+| Space (title card) | open character selection |
+| Left / right (selection) | choose a character |
+| Enter (selection) | enter the house |
 | Arrow keys / WASD | walk |
 | Space / Enter / E | look at the painting in front of you |
 | ← → while looking | browse to the next work |
@@ -24,6 +26,10 @@ the view turns portrait.
 
 Which paintings you have seen is kept in `localStorage`, so the counter in the
 corner survives a reload.
+
+The selected character is remembered separately. The character portrait in the
+top bar opens the selector again without resetting position or artwork progress.
+On touchscreens, tap a portrait and the confirmation button.
 
 ## The title card
 
@@ -48,7 +54,9 @@ assets/styles.css   everything outside the canvas
 assets/gallery.js   the real paintings, written by the admin page
 assets/artworks.js  the drawn paintings, and the merge of the two lists
 admin.html          the admin page: add paintings, publish them
-assets/sprite.js    Lapsina, drawn from rectangles (no sprite sheet)
+assets/sprite.js    three directional, animated pixel characters
+assets/characters.js character selection, keyboard focus, saved choice
+assets/characters.webp approved character concept portraits
 assets/title.js     the title card, its pixel font and its little gallery
 assets/game.js      tile map, collision, camera, lighting, interaction
 ```

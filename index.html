@@ -18,6 +18,7 @@
     </div>
     <div class="hud-right">
       <span class="hud-count"><b id="seenCount">0</b> / <span id="totalCount">7</span> seen</span>
+      <button id="characterBtn" class="hud-btn character-toggle" type="button" aria-label="Choose character" title="Choose character"><canvas id="characterIcon" width="24" height="28" aria-hidden="true"></canvas></button>
       <button id="soundBtn" class="hud-btn" type="button" aria-pressed="false" title="Toggle sound (M)">♪ off</button>
       <button id="helpBtn" class="hud-btn" type="button" title="How to play (H)">?</button>
     </div>
@@ -81,9 +82,32 @@
   <div class="crt"><canvas id="bootCanvas" aria-label="House of Lapsina title screen"></canvas></div>
 </div>
 
+<div id="characterSelect" hidden>
+  <section class="character-selection" role="dialog" aria-modal="true" aria-labelledby="characterHeading">
+    <p class="character-eyebrow">Lapsina Tiny Gallery</p>
+    <h1 id="characterHeading">Choose your companion</h1>
+    <div class="character-options" role="group" aria-label="Gallery companions">
+      <button class="character-option" type="button" data-character="girl" aria-pressed="true">
+        <span class="character-portrait portrait-girl" aria-hidden="true"></span><span class="character-name">The Girl</span>
+      </button>
+      <button class="character-option" type="button" data-character="guy" aria-pressed="false">
+        <span class="character-portrait portrait-guy" aria-hidden="true"></span><span class="character-name">The Guy</span>
+      </button>
+      <button class="character-option" type="button" data-character="fox" aria-pressed="false">
+        <span class="character-portrait portrait-fox" aria-hidden="true"></span><span class="character-name">The Fox</span>
+      </button>
+    </div>
+    <div class="character-actions">
+      <button id="confirmCharacter" type="button">Enter gallery</button>
+      <button id="cancelCharacter" type="button" hidden>Cancel</button>
+    </div>
+  </section>
+</div>
+
 <script src="assets/gallery.js"></script>
 <script src="assets/artworks.js"></script>
 <script src="assets/sprite.js"></script>
+<script src="assets/characters.js"></script>
 <script src="assets/title.js"></script>
 <script src="assets/game.js"></script>
 </body>

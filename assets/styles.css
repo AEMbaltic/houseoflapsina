@@ -101,6 +101,45 @@ body {
 .hud-btn:hover { color: var(--ink); border-color: var(--gold); }
 .hud-btn[aria-pressed="true"] { color: var(--gold); border-color: var(--gold); }
 
+.character-toggle { padding: 0 3px; height: 30px; flex: 0 0 32px; }
+.character-toggle canvas { display: block; image-rendering: pixelated; }
+
+#characterSelect {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  overflow: auto;
+  background: #18191c;
+  display: grid;
+  place-items: center;
+  padding: 32px 24px;
+}
+#characterSelect[hidden] { display: none; }
+.character-selection { width: min(100%, 1000px); text-align: center; }
+.character-eyebrow { margin: 0 0 12px; color: #b9aea2; font-size: 12px; text-transform: uppercase; letter-spacing: 0; }
+.character-selection h1 { margin: 0 0 32px; color: #f5ecd9; font-family: ui-monospace, monospace; font-size: 30px; line-height: 1.2; letter-spacing: 0; }
+.character-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.character-option { min-width: 0; padding: 0 0 20px; border: 2px solid #3a3c40; border-radius: 6px; background: #1d1e20; color: #bbb8b4; cursor: pointer; overflow: hidden; }
+.character-option[aria-pressed="true"] { border-color: #e0b25f; color: #ffe3a3; background: #262528; }
+.character-option:hover { border-color: #b5a58b; }
+.character-option:focus-visible, .character-actions button:focus-visible { outline: 3px solid #76c6ca; outline-offset: 5px; }
+.character-portrait { display: block; width: 100%; aspect-ratio: 472 / 512; background-image: url('characters.webp'); background-size: 325.424% 200%; background-repeat: no-repeat; image-rendering: pixelated; }
+.portrait-girl { background-position: 1.88% 27.34%; }
+.portrait-guy { background-position: 50% 27.34%; }
+.portrait-fox { background-position: 98.12% 27.34%; }
+.character-name { display: block; font: 600 17px ui-monospace, monospace; padding: 8px 6px 0; }
+.character-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.character-actions button { min-height: 46px; padding: 12px 28px; border: 1px solid #e0b25f; border-radius: 4px; background: #e0b25f; color: #1c1720; font: 600 15px ui-monospace, monospace; cursor: pointer; }
+.character-actions #cancelCharacter { background: transparent; color: #d3c9b8; border-color: #55545b; }
+@media (max-width: 560px) {
+  #characterSelect { padding: 24px 12px; }
+  .character-selection h1 { font-size: 23px; margin-bottom: 24px; }
+  .character-options { gap: 8px; }
+  .character-option { padding-bottom: 12px; }
+  .character-name { font-size: 12px; }
+  .hud-room { display: none; }
+}
+
 /* ---------- Stage ---------- */
 
 #stage {
