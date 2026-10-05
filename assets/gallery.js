@@ -5,8 +5,10 @@
 window.GALLERY = [
   {
     "title": "PAEONIA LACTIFLORA",
-    "year": 2025,
-    "medium": "OIL ON CANVAS",
+    "year": 2024,
+    "medium": "oil on canvas",
+    "artist": "L.Muižarāja",
+    "note": "SOLD",
     "src": "assets/art/paeonia-lactiflora.jpg",
     "aspect": [
       724,
@@ -21,7 +23,11 @@ window.GALLERY = [
     ]
   },
   {
-    "title": "Pink Shore",
+    "title": "CANDY SKIES",
+    "year": 2024,
+    "medium": "oil on canvas",
+    "artist": "L.Muižarāja",
+    "note": "SOLD",
     "src": "assets/art/pink-shore.jpg",
     "aspect": [
       841,
@@ -36,7 +42,11 @@ window.GALLERY = [
     ]
   },
   {
-    "title": "Open Sea",
+    "title": "RUNNING TO THE SEA",
+    "year": 2025,
+    "medium": "oil on canvas",
+    "artist": "L.Muižarāja",
+    "note": "SOLD",
     "src": "assets/art/open-sea.jpg",
     "aspect": [
       750,
@@ -51,7 +61,10 @@ window.GALLERY = [
     ]
   },
   {
-    "title": "Disco for Two",
+    "title": "PARTY 4 U",
+    "year": 2026,
+    "medium": "oil on canvas",
+    "artist": "L.Muižarāja",
     "src": "assets/art/disco-for-two.jpg",
     "aspect": [
       843,
@@ -66,7 +79,11 @@ window.GALLERY = [
     ]
   },
   {
-    "title": "Three Fish",
+    "title": "FISHERMAN DINNER",
+    "year": 2026,
+    "medium": "oil on newspaper",
+    "artist": "L.Muižarāja",
+    "note": "SOLD",
     "src": "assets/art/three-fish.jpg",
     "aspect": [
       843,
@@ -81,7 +98,11 @@ window.GALLERY = [
     ]
   },
   {
-    "title": "A Mark of Life",
+    "title": "THE SCAR OF LIFE",
+    "year": 2026,
+    "medium": "oil on canvas",
+    "artist": "L.Muižarāja",
+    "note": "SOLD",
     "src": "assets/art/a-mark-of-life.jpg",
     "aspect": [
       967,
@@ -96,7 +117,11 @@ window.GALLERY = [
     ]
   },
   {
-    "title": "Clouds over the Coast",
+    "title": "POPCORN SKY",
+    "year": 2024,
+    "medium": "oil on canvas",
+    "artist": "L.Muižarāja",
+    "note": "SOLD",
     "src": "assets/art/clouds-over-the-coast.jpg",
     "aspect": [
       692,
