@@ -19,6 +19,30 @@
 </header>
 
 <main>
+  <section class="statistics" aria-labelledby="statistics-title">
+    <div class="stats-heading">
+      <h2 id="statistics-title">Visitor statistics</h2>
+      <a href="https://vercel.com/aksels-muizarajs-projects/houseoflapsina/analytics" target="_blank" rel="noopener">Open in Vercel ↗</a>
+    </div>
+    <form id="stats-connect" class="stats-connect">
+      <label class="field grow"><span>Vercel access token</span><input id="stats-token" type="password" autocomplete="off" required maxlength="512" /></label>
+      <button type="submit">Connect statistics</button>
+      <p class="hint">Separate from your publishing token. <a href="https://vercel.com/account/settings/tokens" target="_blank" rel="noopener">Create a Vercel token</a> scoped to houseoflapsina. Kept only while this page is open.</p>
+    </form>
+    <div id="stats-report" hidden>
+      <div class="stats-toolbar">
+        <label>Period <select id="stats-period"><option value="1">Today</option><option value="7" selected>Last 7 days</option><option value="28">Last 28 days</option></select></label>
+        <button type="button" id="stats-refresh" title="Refresh statistics" aria-label="Refresh statistics">↻</button>
+        <button type="button" id="stats-disconnect">Disconnect</button>
+      </div>
+      <dl class="stats-totals"><div><dt>Visitors</dt><dd id="stats-visitors">—</dd></div><div><dt>Page views</dt><dd id="stats-views">—</dd></div></dl>
+      <h3>Daily page views</h3>
+      <div id="stats-chart" class="stats-chart"></div>
+      <div class="stats-breakdowns"><div><h3>Sources</h3><ol id="stats-sources"></ol></div><div><h3>Countries</h3><ol id="stats-countries"></ol></div></div>
+    </div>
+    <p id="stats-status" role="status" aria-live="polite" class="status">Tracking starts on 6 October 2026. Earlier visits are not available.</p>
+    <p class="hint stats-note">Visitor counts are estimates, not identified people. Repeat visits on different days or devices can count again. Dates use UTC; recent visits may take a few minutes to appear.</p>
+  </section>
   <section id="list" class="list"></section>
 
   <div class="add">
@@ -69,5 +93,6 @@
 
 <script src="assets/gallery.js"></script>
 <script src="assets/admin.js"></script>
+<script src="assets/statistics.js"></script>
 </body>
 </html>

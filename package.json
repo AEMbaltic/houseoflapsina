@@ -1,0 +1,6 @@
+{
+  "name": "houseoflapsina",
+  "private": true,
+  "type": "commonjs",
+  "engines": { "node": "24.x" }
+}
